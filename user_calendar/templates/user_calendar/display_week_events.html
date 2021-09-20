@@ -1,0 +1,25 @@
+<div class="overlay-calendar-event-container">
+  <div class="overlay_exit">
+    <button type="button" onclick="off()">X</button>
+  </div>
+  <div class="week_calendar_events">
+    {% for day,events in selected_events %}
+    <div class="">
+      <h2>{{day|date:"D: d-M-Y"}}</h2>
+      <ul class="week_day_event_items">
+      {% for event in events %}
+        <li>
+          <a href="{% url 'user_calendar:edit_event' uuid=event.uuid %}"></a>
+          {{event.start_date| date:"H:i"}} - {{event.end_date| date:"H:i"}}:
+          {{event.title}}
+          <ul class="week_day_event_items">
+            <li>{{event.discription}}</li>
+          </ul>
+        </li>
+      {% endfor %}
+      </ul>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>

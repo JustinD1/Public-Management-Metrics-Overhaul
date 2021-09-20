@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>The following is a list of weekly OPR's that are missing</h2>
+  <p><a href="{% url 'home:home' %}">Return to home</a></p>
+  {% for store in stores %}
+    <div class="cardBody">
+      <h3>{{store}}</h3>
+      {% for year in yearList %}
+        <div>
+          <h4>{{year}}</h4>
+          <ul>
+            {% for storeID,date in missingOPRS %}
+              {% if store == storeID and year == date|date:"Y" %}
+                <li>{{date}}</li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+      {% endfor %}
+    </div>
+    <br>
+  {% endfor %}
+
+{% endblock %}

@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="mainContent">
+  <div id="underlay">
+    <div id="saleTurnover">
+      <h2>{{store}}</h2>
+      <p>Sales breakdown for {{year}}</p>
+    </div>
+
+    <div id="change_budget">
+      <a href="#" onclick="overlayToggle()">View budget</a>
+    </div>
+
+    <table class="dataTable">
+      <thead class="dataTableHead">
+        <tr>
+          <th></th>
+          <th colspan="3" class="doubleRightBorder" style="border-bottom: 1px solid black">Sales</th>
+          <th colspan="4" class="doubleRightBorder" style="border-bottom: 1px solid black">TY v's Budget</th>
+          <th colspan="4" style="border-bottom: 1px solid black">TY v's LY</th>
+        </tr>
+        <tr>
+          <th>Date</th>
+          <th style="border-bottom: 1px solid black">TY</th>
+          <th style="border-bottom: 1px solid black">Budget</th>
+          <th class="doubleRightBorder" style="border-bottom: 1px solid black">LY</th>
+          <th colspan="2" style="border-bottom: 1px solid black">Weekly</th>
+          <th colspan="2" class="doubleRightBorder" style="border-bottom: 1px solid black">YTD</th>
+          <th colspan="2" style="border-bottom: 1px solid black">Weekly</th>
+          <th colspan="2" style="border-bottom: 1px solid black">YTD</th>
+        </tr>
+        <tr>
+          <th></th>
+          <th>€</th>
+          <th>€</th>
+          <th class="doubleRightBorder">€</th>
+          <th>€</th>
+          <th>%</th>
+          <th>€</th>
+          <th class="doubleRightBorder">%</th>
+          <th>€</th>
+          <th>%</th>
+          <th>€</th>
+          <th>%</th>
+        </tr>
+
+      </thead>
+      <tbody class="dataTableBody">
+        {% for item in postRow %}
+        <tr class="{% cycle 'row1' 'row2' %}">
+          <td style="text-align: left;">{{item.date}}</td>
+          <td>{{item.wkTurnover}}</td>
+          <td>{{item.bugtTurnover}}</td>
+          <td class="doubleRightBorder">{{item.pre_turnover}}</td>
+
+          <td>{{item.diff}}</td>
+          <td>{{item.diffPrec}}</td>
+          <td>{{item.c_diff}}</td>
+          <td class="doubleRightBorder">{{item.c_diffPrec}}</td>
+
+          <td>{{item.pre_diff}}</td>
+          <td>{{item.pre_diffPrec}}</td>
+          <td>{{item.c_pre_diff}}</td>
+          <td>{{item.c_pre_diffPrec}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+
+
+  </div>
+
+  <div id="overlayToggle">
+    <div id="overlayContainer">
+      <div id="closeOverlay" class="M5-P5">
+        <button type="button" name="X" onclick="overlayToggle()">X</button>
+      </div>
+      <br>
+      <br>
+      <div class="M5-P5">
+        <form method="POST">
+          {% csrf_token %}
+          <p>Updat all: <input id="id_default_set_budget"  class="M5-P5" type="number" name="default_set_budget" value=""></p>
+          <br>
+          <input class="center" type="submit" value="Update All" class="button">
+        </form>
+      </div>
+      <div class="containerButtomTrim"></div>
+      <form method="post">
+        {% csrf_token %}
+        {% for date,item in budgets %}
+        <div class="M5-P5">
+          <p>{{date.date|date:"d-M"}}: {{item.budget_percent}}</p>
+        </div>
+        {% endfor %}
+        <input class="center" type="submit" value="Update Profile" class="button">
+      </form>
+        <a href="#" onclick="overlayToggle()">close</a>
+    </div>
+  </div>
+  {% endblock %}
+
+  {% block css_insert %}
+    <link href="{% static 'css-tables.css' %}" rel="stylesheet">
+  {% endblock %}

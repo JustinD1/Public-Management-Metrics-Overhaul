@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="mainContent">
+{% if errorReport %}
+  <div id="errorBox">
+    <ul>
+    {% for item in errorReport %}
+      <li>{{item}}</li>
+    {% endfor %}
+  </ul>
+  </div>
+{% endif %}
+<div id="saleTurnover">
+  <h2>{{store}}</h2>
+  <p>Comparing OPR week: {{last_file.week_number}}, {{last_file.date}} to: <br>
+    <b>Last week</b>: {{compare2.lastWeek}},
+    <b>Last year</b>: {{compare2.lastYear}}
+  </p>
+
+</div>
+<div id="changeStore">
+  {% for item in stores %}
+    <div>
+      <a href="{% url 'sales:department_comparison' storeID=item.store %}"></a>
+    </div>
+  {% endfor %}
+</div>
+
+<table class="dataTable">
+  <thead class="dataTableHead">
+    <tr>
+      <th  class="doubleRightBorder" style="max-width:200px;"></th>
+      <th colspan="4" class="doubleRightBorder">Sales</th>
+      <th colspan="4" class="doubleRightBorder">ytd Sales</th>
+      <th colspan="2">Last Four Weeks</th>
+    </tr>
+    <tr>
+      <th  class="doubleRightBorder" style="max-width:200px;">Section</th>
+      <th>ly</th>
+      <th>ty</th>
+      <th colspan="2" class="doubleRightBorder">Difference</th>
+      <th>ly</th>
+      <th>ty</th>
+      <th colspan="2" class="doubleRightBorder">Difference</th>
+      <th colspan="2" >Difference</th>
+    </tr>
+    <tr>
+      <th  class="doubleRightBorder" style="max-width:200px;"></th>
+      <th>€</th>
+      <th>€</th>
+      <th>€</th>
+      <th class="doubleRightBorder">%</th>
+      <th>€</th>
+      <th>€</th>
+      <th>€</th>
+      <th class="doubleRightBorder">%</th>
+      <th>€</th>
+      <th>%</th>
+    </tr>
+  </thead>
+  <tbody class="dataTableBody">
+    <tr></tr>
+    {% for item in tableContent %}
+        {% if item.visable %}
+          <tr data-level='{{item.data_level}}' class = "rowExpand {% cycle 'row1' 'row2' %} " style="display: table-row">
+        {% else %}
+          <tr data-level='{{item.data_level}}' class = "rowExpand {% cycle 'row1' 'row2' %} " style="display:  none">
+        {% endif %}
+
+        {% if item.data_level == 1 %}
+            <td class="leftAlign doubleRightBorder" style="padding-left:0px;max-width:200px;">{{item.name}}</td>
+        {% elif item.data_level == 2 %}
+            <td class="leftAlign doubleRightBorder" style="padding-left:32px;max-width:200px;">{{item.name}}</td>
+        {% elif item.data_level == 3 %}
+            <td class="leftAlign doubleRightBorder" style="padding-left:64px;max-width:200px;">{{item.name}}</td>
+        {% elif item.data_level == 4 %}
+            <td class="leftAlign doubleRightBorder" style="padding-left:128px;max-width:200px;">{{item.name}}</td>
+        {% endif %}
+        <td>{{item.lastYear_sales}}</td>
+        <td>{{item.current_sales}}</td>
+        <td>{{item.this_week_last_year_sale_diff}}</td>
+        <td class="doubleRightBorder">{{item.this_week_last_year_sale_diffPrec}}</td>
+        <td>{{item.lastYear_ytdsales}}</td>
+        <td>{{item.current_ytdsales}}</td>
+        <td>{{item.this_week_last_year_ytdsale_diff}}</td>
+        <td class="doubleRightBorder">{{item.this_week_last_year_ytdsale_diffPrec}}</td>
+        <td>{{item.corrosponding_4_weeks_last_year_diff}}</td>
+        <td>{{item.corrosponding_4_weeks_last_year_diffPrec}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock content %}

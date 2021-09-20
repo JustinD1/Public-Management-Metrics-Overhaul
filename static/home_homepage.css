@@ -1,0 +1,59 @@
+/* Start of the homepage housing tile url links that are editable */
+.urlContainer {
+  float: left;
+  margin-left: auto;
+  margin-right: auto;
+  width: 66%;
+}
+
+.calenderContainer {
+  float: left;
+  margin-left: auto;
+  margin-right: auto;
+  width: 33%;
+  min-width: 235px;
+}
+
+@media screen and (max-width: 790px) {
+  .urlContainer{
+    float: none;
+    width:auto;
+  }
+  .calenderContainer{
+    float: none;
+    margin-right: 0;
+    width: auto;
+  }
+}
+
+.eventListContainer {
+  overflow-y: scroll;
+  height: 400px;
+}
+
+.eventFinished {
+  color: #bc171d;
+  text-shadow: 1px 1px 1px black;
+}
+
+.eventUpcoming {
+  color: #d6a225;
+  text-shadow: 1px 1px 1px black;
+}
+
+.eventOngoing{
+  color: #29C993;
+  text-shadow: 1px 1px 1px black;
+}
+
+
+/* Overlay for url handling */
+
+#overlayContainer.homeOverlay {
+  width: 80%;
+}
+@media screen and (max-width: 790px) {
+  #overlayContainer.homeOverlay {
+    width: 60%;
+  }
+}

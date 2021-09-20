@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+{% now "Y" as current_year %}
+<div class="mainContent">
+  <div style="text-align:center;">
+{% for store in stores %}
+<div class="squareContainerDefault">
+  <h2 class="contentTitle">{{store}}</h2>
+  <div class="squareBody" style="text-align:left;">
+    <ul>
+      <h5>Reports:</h5>
+      <li><a href="{% url 'opr2:show_opr_list' store=store.store %}">OPR's</a></li>
+      <li><a href="{% url 'sales:yearly_sales' storeID=store.store year=current_year %}">Sales comparison</a></li>
+      <li><a href="{% url 'sales:department_comparison' storeID=store.store %}">Weekly department comparison</a></li>
+      <li><a href="{% url 'sales:department_breakdown' storeID=store.store year=current_year %}">Department breakdown</a></li>
+  </ul>
+  </div>
+  <div class="containerButtomTrim"></div>
+</div>
+{% endfor %}
+</div>
+{% endblock %}

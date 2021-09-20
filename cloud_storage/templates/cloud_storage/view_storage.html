@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% if errorReport %}
+  <div id="errorBox">
+    <ul>
+    {% for item in errorReport %}
+      <li>{{item}}</li>
+    {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+{% if user_profile.hierarchy <= 3 %}
+  <form action="{% url 'cloud_storage:upload' %}">
+    <input type="submit" value="Upload File">
+  </form>
+{% endif %}
+{% if user_profile.hierarchy <= 3 %}
+  <div class="popup-overlay">
+    <div class="popup-content">
+      <form method="post">
+        {% csrf_token %}
+        <h3>Delete Confirmation</h3>
+        <p>Are you sure you want to delete <span></span> that was uploaded on the <span></span> </p>
+        <input id="deleteID" type="hidden" name="deleteFile" value="">
+        <input type="submit" value="OK" class="button">
+        <button type="button" onclick="openClose()" name="button">Cancel</button>
+      </form>
+    </div>
+  </div>
+{% endif %}
+{% if catagory_list %}
+  <div class="storage_container">
+    <div class="catagory_container" id="toggle_visability" style="display:block">
+      <ul>
+        {% for item in catagory_list %}
+        <li><button type="button" name="button" onclick="catagorySelect('{{item}}')">{{item}}</button></li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="table_container" style="margin-top:-5px; width:1040px;">
+      <table style="margin:0px;">
+        <tr>
+          <td>
+            <button type="button" name="button" onclick="toggleVisability('toggle_visability')"><<</button>
+            <select class="" name="View" id="view_seletion" onchange="toggleView()">
+              <option value="Tile" selected>Tile</option>
+              <option value="List">List</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="content_container" data-view='List' style='display: none;'>
+              <ul style="text-align:left;">
+                <li class="content" style="margin-bottom: 5px; border-bottom: 1px solid #29C993;">
+                    <span style="background-color:#999; width:200px;">Title</span>
+                    <span style="background-color:#888; width:400px;">Discription</span>
+                    <span style="background-color:#999; width:100px;">Date</span>
+                    {% if user_profile.hierarchy <= 3 %}
+                    <span style="background-color:#888; width:60px;">Delete</span>
+                    {% endif %}
+                </li>
+                {% for item in filtered_uploads %}
+                  <li class="content"  data-catagory="{{item.catagory}}">
+                    <a id="item-{{item.pk}}" href="{% url "cloud_storage:download" filename_pk=item.pk %}">
+                      <span style="background-color:#999; width:200px;">{{item.file_name}}</span>
+                      <span style="background-color:#888; width:400px;">{{item.discription}}</span>
+                      <span style="background-color:#999; width:100px;">{{item.uploaded_date | date:"d/m/Y"}}</span>
+                    </a>
+                    {% if user_profile.hierarchy <= 3 %}
+                    <button class="open" type="button" name="button" onclick="confirmDelete({{item.pk}})" style="background-color:#888; color:red;">X</button>
+                    {% endif %}
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="content_container" data-view='Tile' style='display:block;'>
+              {% for item in filtered_uploads %}
+                <a href="{% url "cloud_storage:download" filename_pk=item.pk %}">
+                  <div class="content" data-catagory="{{item.catagory}}" style="display:block; float:left;">
+                    <h3 class="contentTitle">{{item.file_name}}</h3>
+                    <div class="highlightBox">
+                      <div class="contentInfo">
+                        <p>{{item.discription}}</p>
+                        <span style="text-align:right;">{{item.uploaded_date | date:"d/m/Y"}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              {% endfor %}
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+{% endif %}
+{% endblock %}
+
+{% block css_insert %}
+  <link href="{% static 'css-storage.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block java_insert %}
+  <script src="{% static 'js/js-storage.js' %}"></script>
+{% endblock %}

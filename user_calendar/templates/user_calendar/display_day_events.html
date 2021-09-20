@@ -1,0 +1,44 @@
+{% load get_item_tag %}
+
+<div class="overlay-calendar-event-container">
+  <div class="overlay_exit">
+    <button type="button" onclick="off()">X</button>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Time</th> <th>Events</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for time in time_periods %}
+      <tr>
+        <td>
+          {{time}}<br>
+        </td>
+        <td>
+          {% get_item selected_events time "data" as data_exists%}
+          {% if data_exists == True %}
+          {% get_item selected_events time "events" as events%}
+          {% for event,height,depth in events %}
+          <a class="overlay-event-item-link" href="{{uuid}}">
+            <div class="overlay-event-item" style="margin-left:{% if depth == 0 %}0{% else %}{% widthratio depth 1 120 %}{% endif %}px;{% if depth > 0 %}width:calc(85% - {% widthratio depth 1 120 %}px);{% endif %} z-index:{{depth}};height:{% widthratio height 1 30 %}px;">
+              <a href="{% url 'user_calendar:edit_event' uuid=event.uuid %}">
+                <h4>
+                  {{event.start_date| date:"H:i"}}-{{event.end_date| date:"H:i"}}
+                </h4>
+                <p>
+                  {{event.title}} <br> {{event.pk}}
+                </p>
+              </a>
+            </div>
+          </a>
+          {% endfor %}
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</div>

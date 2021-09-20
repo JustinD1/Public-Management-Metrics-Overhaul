@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div id="overlay">
+  <div id="fill-text"></div>
+</div>
+<div class="calendar-header">
+  <form id="calendar-selector" method="post">
+  <div class="calendar-header-middle">
+    <input class="calendar_form_event" type="submit" name="month-backward" value="<<" onclick="sendSelection()">
+    <div class="cld-head-current-month">
+      <div class="">
+        <select class="calendar_form_event" name="selected_year">
+          {% for item in list_of_years %}
+          <option value="{{item}}" onclick="sendSelection()">{{item}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="">
+        <select class="calendar_form_event" name="selected_month">
+          {% for value,month in list_of_months %}
+          <option value="{{value}}" onclick="sendSelection()">{{month}}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <input class="calendar_form_event" type="submit" name="month-forward" value=">>" onclick="sendSelection()">
+  </div>
+</form>
+</div>
+<div class="calendar-table">
+    <div class="cth-container">
+      <table>
+        <thead>
+          <tr>
+            <th class="cld-week_number"><span>Week</span></th>
+            <th class="cth-day-mon cell-size"><span>Mon</span></th>
+            <th class="cth-day-tue cell-size"><span>Tue</span></th>
+            <th class="cth-day-wed cell-size"><span>Wed</span></th>
+            <th class="cth-day-thur cell-size"><span>Thur</span></th>
+            <th class="cth-day-fri cell-size"><span>Fri</span></th>
+            <th class="cth-day-sat cell-size"><span>Sat</span></th>
+            <th class="cth-day-sun cell-size"><span>Sun</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {% for date,active_type,week_number,events in list_of_dates_in_month %}
+              {% if forloop.counter0|divisibleby:7  %}
+          </tr>
+          <tr>
+            <td class="cld-week_number">
+              <button type="button" onclick="queryDates( 'week_{{date|date:"d/m/Y"}}' )">
+              {{week_number}}
+            </button>
+            </td>
+              {% endif %}
+              <td class="{{active_type}}  cell-size">
+                <a class="cld-day-link" href="#" onclick="queryDates( 'day_{{date|date:"d/m/Y"}}' )" >
+                {{date|date:"d"}}
+              </a>
+
+              <br>
+              <div style="height:65px">
+                {% for event in events %}
+                <div class="calendar-event-item">
+                  <a onclick="queryDates( 'day_{{date|date:"d/m/Y"}}' )">
+                    {{event.title}}
+                  </a>
+                </div>
+                {% endfor %}
+              </div>
+
+            </td>
+            {% endfor %}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block java_insert %}
+  <script src="{% static 'js/calendar_view_calendar.js' %}"></script>
+{% endblock %}
+
+{% block css_insert %}
+  <link href="{% static 'css-calendar_view.css' %}" rel="stylesheet">
+{% endblock %}

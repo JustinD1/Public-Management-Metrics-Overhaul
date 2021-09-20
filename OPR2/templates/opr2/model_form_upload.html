@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if errorReport %}
+  <div id="errorBox">
+    <ul>
+    {% for item in errorReport %}
+      <li>{{item}}</li>
+    {% endfor %}
+  </ul>
+  </div>
+{% endif %}
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Upload</button>
+  </form>
+
+  <p><a href="{% url 'home:home' %}">Return to home</a></p>
+{% endblock %}

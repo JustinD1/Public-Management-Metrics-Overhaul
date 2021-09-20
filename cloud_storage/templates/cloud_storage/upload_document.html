@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% if errorReport %}
+  <div id="errorBox">
+    <ul>
+    {% for item in errorReport %}
+      <li>{{item}}</li>
+    {% endfor %}
+  </ul>
+  </div>
+{% endif %}
+<div class="mainContent" style="text-align: center;">
+  <div class="squareContainerDefault">
+    <h2 class="contentTitle">Add to Cloud</h2>
+    <div class="squareBody" style="text-align:left;">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div style="float: left; margin-right:10px; margin-top:15px">
+          <a href="#" onclick="overlayToggle()">
+            <div class=circle>
+              <div class="bar horizontal"></div>
+              <div class="bar vertical"></div>
+            </div>
+          </a>
+        </div>
+        {{form.as_p}}
+        <div style="text-align: right;">
+          <button type="submit">Upload</button>
+        </div>
+      </form>
+    </div>
+    <div class="containerButtomTrim"></div>
+  </div>
+</div>
+
+<div id="overlayToggle">
+  <div class="homeOverlay" id="overlayContainer" style="min-width:210;">
+    <div id="closeOverlay">
+      <button type="button" name="X" onclick="overlayToggle()">X</button>
+    </div>
+    <br>
+    <br>
+    <div class="">
+      <form method="post">
+        {% csrf_token %}
+        <div class="">
+          <h2>New Catagory</h2>
+          <input type="text" name="catagory_option" value="">
+        </div>
+        <input type="submit" value="Update" class="button">
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block css_insert %}
+<link href="{% static 'css-storage.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block java_insert %}
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+{% endblock %}

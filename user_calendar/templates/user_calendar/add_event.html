@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% if errorReport %}
+  <div id="errorBox">
+    <ul>
+    {% for item in errorReport %}
+      <li>{{item}}</li>
+    {% endfor %}
+  </ul>
+  </div>
+{% endif %}
+    <div class="calendar_form">
+      <p class="contentTitle">Add a calendar event</p>
+      <form id="calendar_event" method="POST">
+
+        <div class="form_segment">
+          Title:<br>
+          <input type="text" name="title"> <br>
+          Discription:<br>
+          <input type="text" name="discription">
+        </div>
+
+        <div class="form_segment">
+          <div class="repeatType">
+            {% for item in repeat_type_select %}
+            <label stlye='display:inline-block;'>{{item}}<input type="radio" name="repeat_type" value="{{item}}" {% if item == "Day" %} checked {% endif %}></label> {% if not forloop.last %}|{% endif %}
+            {% endfor %}
+          </div>
+
+          <div id="month_choice" class="month_hide">
+            <p>
+              Repeat the event on the
+              <select class="" name="month_date">
+                {% for item in monthly_select_type %}
+                <option value="{{item}}">{{item}}</option>
+                {% endfor %}
+              </select>
+              <select class="" name="month_date">
+                {% for item_id,item_named in monthly_select_day %}
+                <option value="{{item_id}}">{{item_named}}</option>
+                {% endfor %}
+              </select>
+              of the month.<br> Starting from
+              <select class="" name="month_start">
+                  <option value="next">next</option>
+                  <option value="this">this</option>
+              </select>
+              month.
+            </p>
+          </div>
+          <div id="non-month_choice" class="month_show">
+            Date: <input type="date" name="date">
+            <br>
+          </div>
+          <p>This event will happen for <input id="repeat_count" type="number" name="event_repeat" min="1" max="31" value="1" > <span class="time_period_name">day</span><span class="s_for_grammer"></span> </p>
+
+          <div>
+            Start time: <input type="time" name="start_time">
+            Finish time:<input type="time" name="finish_time">
+          </div>
+        </div>
+        <div class="containerButtomTrim"></div>
+        <div class="">
+          <p style="display:inline-block">Do you want to create a reminder?</p>
+          <input id="create_Reminder" type="checkbox" name="create_reminder">
+          <div id="reminder_info" style="display: none;">
+            <p>
+              Remind attendees
+              <input id="reminer_time" type="number" name="reminder_time" value="1" min="1" max="31" style="width:35px;">
+              <select id="reminder_time_select" name="time_period">
+                <option value="day">day</option>
+                <option value="week">week</option>
+                <option value="month">month</option>
+              </select>
+              ; for
+              <select class="" name="reminder_repeat">
+                <option value="first">the first</option>
+                <option value="each">each</option>
+              </select> dated event.
+            </p>
+            <h6> <i>By default people will have a reminder 10pm the previous day.</i> </h6>
+          </div>
+        </div>
+
+        <div class="containerButtomTrim"></div>
+
+        <div id="mousedownSelect" class="form_segment">
+          <div class="" style="display: inline-block">
+            <h3>Select department:</h3>
+            <select class="" name="group_choice" multiple>
+              {% for item_id,item_named in group_choices %}
+              <option value="{{item_id}}">{{item_named}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class=""  style="display: inline-block">
+            <h3>Select users:</h3>
+            <div class="" style="display:inline-block; width:250px;">
+              <select class=""  name="selected_users" multiple style="width:200px;">
+                {% for item in user_choices %}
+                <option value="{{item.pk}}">{{item.user.last_name}}, {{item.user.first_name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        </div>
+        <input type="submit" value="submit" class="button">
+      </form>
+    </div>
+
+    {% if noteReport or savedEvents %}
+      {% if not errorReport %}
+        <div id="overlayToggle" style="visibility: visible;">
+          <div id="overlaycalendar">
+              <ul style="border-bottom:1px solid black;">
+              {% for item in noteReport %}
+                <li>{{item}}</li>
+                {% if forloop.last %} <br> {% endif %}
+              {% endfor %}
+            </ul>
+              {% if createdEvent %}
+                <div class="eventContainer">
+                  <div class="titleBox">
+                      <p>{{createdEvent.title}}</p>
+                      <p>{{createdEvent.start_time}} - {{createdEvent.finish_time}}</p>
+                  </div>
+                  <div class="calendarDiscription">
+                    <p><i>{{createdEvent.discription}}</i></p>
+                    <p>-- {{createdEvent.created_by.first_name}}</p>
+                  </div>
+                  <div class="calendarDate">
+                    <p>
+                      {% for item in savedEvents %}
+                      {{item.start_date|date:"d-M-y"}}{% if not forloop.last %}  |{% endif %}
+                      {% endfor %}
+                    </p>
+                  </div>
+                  {% if "reminder_discription" in createdEvent %}
+                  <div class="calendarReminder">
+                    <p>{{ createdEvent.reminder_discription }}</p>
+                  </div>
+                  {% endif %}
+                </div>
+                  <p>Attendees:</p>
+                  {% for person in selected_users %}
+                  <div class="calendarAttendees">
+                    <p>{{person.user.first_name}} {{person.user.last_name}}{% if not forloop.last %}  |{% endif %}</p>
+                  {% endfor %}
+                </div>
+                <form method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="confirmEvent" value="{{eventPKs}}">
+                  <input type="submit" value="Confirm" class="button">
+                </form>
+                <form id="deletePrevious" method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="deleteEvent" value="{{eventPKs}}">
+                  <input type="submit" value="Delete" class="button">
+                </form>
+              {% endif %}
+          </div>
+        </div>
+      {% endif %}
+    {% endif %}
+{% endblock %}
+
+
+{% block java_insert %}
+  <script src="{% static 'js/calendar_addevent.js' %}"></script>
+{% endblock %}
+
+{% block css_insert %}
+  <link href="{% static 'css-calendar_event.css' %}" rel="stylesheet">
+{% endblock %}

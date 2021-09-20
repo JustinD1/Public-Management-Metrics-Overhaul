@@ -1,0 +1,12 @@
+*.pyc
+*~
+__pycache__
+db.sqlite3
+/static_collect
+OPR_Batch
+add_the_vat.py
+cron.log
+/media
+/*/migrations
+/MMO
+manage.py

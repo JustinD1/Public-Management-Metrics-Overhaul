@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="mainContent">
+    <div>
+      <h2>Overall Profit Report</h2>
+      <h3>{{selectedStore.store}} - {{selectedStore.store_town}}</h3>
+    </div>
+    <div class="storeSelect">
+        {% for item in storeDB %}
+          <div class="mediumButton">
+            <a href="{% url 'opr2:show_opr_list' store=item.store %}"><h4>{{item}}</h4></a>
+          </div>
+        {% endfor %}
+    </div>
+    {% for year in yearList %}
+      <div class="mainContent" style="width:80%; float: none;">
+        <p class="contentTitle">{{year}}</p>
+        <div style="text-align:center"></div>
+        <div class="squareContainerDefault" style="text-align: left;">
+          {% for item in dateDB %}
+            {% if year == item.financial_year %}
+              <div class="squareBodyInline" style="width:70px;">
+                <a {% if item.data_exists %}
+                href="{% url 'opr2:show_opr_dept' store=selectedStore.store pk=item.pk %}" class="urlLinkFont"
+                {% else %}
+                style="color:#666;"
+                {% endif %}>
+                {{ item.date|date:"M-d" }}</a>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+        <div class="containerButtomTrim"></div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

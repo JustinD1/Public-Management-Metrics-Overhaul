@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% if errorReport %}
+  <div id="errorBox">
+    <ul>
+    {% for item in errorReport %}
+      <li>{{item}}</li>
+    {% endfor %}
+  </ul>
+  </div>
+{% endif %}
+
+{% for item in form %}
+  <div class="container">
+    {{item.error}}
+    {{item.label_tag}} {{item}}
+    {% if item.help_text %}
+      <p class="help">{{ field.help_text|safe }}</p>
+    {% endif %}
+  </div>
+{% endfor %}
+{% endblock %}
+
+
+{% block java_insert %}
+  <script src="{% static 'js/calendar_editevent.js' %}"></script>
+{% endblock %}
+
+{% block css_insert %}
+  <link href="{% static 'css-calendar_event.css' %}" rel="stylesheet">
+{% endblock %}

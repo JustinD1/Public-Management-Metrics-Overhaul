@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% load timeBin_tag %}
+
+{% block content %}
+<div id="underlay">
+{% if user.is_authenticated %}
+
+  <div class="urlContainer">
+    <div class="mainContent">
+      <p class="contentTitle">Internal Links:</p>
+      <div style="text-align:center;">
+      {% for item in user_internal_links %}
+        <div class="squareContainerDefault">
+          <div class="squareBody">
+            <a href="{{item.url_link.url_code}}"><span class='urlLinkFont'>{{item.name}}</span></a>
+          </div>
+        </div>
+      {% endfor %}
+
+    </div>
+      <br style="clear:both">
+      <div style="clear:both; margin: 5px auto;">
+        <a href="#" onclick="overlayToggle()">
+          <div class=circle>
+            <div class="bar horizontal"></div>
+            <div class="bar vertical"></div>
+          </div>
+        </a>
+      </div>
+      <div class="containerButtomTrim"></div>
+    </div>
+    
+    <div class="mainContent">
+      <p class="contentTitle">External Links:</p>
+      <div style="text-align:center;">
+      {% for item in user_external_links %}
+        <div class="squareContainerDefault">
+          <div class="squareBody">
+            <a href="{{item.url_link.url_code}}"><span class='urlLinkFont'>{{item.name}}</span></a>
+          </div>
+        </div>
+      {% endfor %}
+
+    </div>
+      <br style="clear:both">
+      <div style="clear:both; margin: 5px auto;">
+        <a href="#" onclick="overlayToggle()">
+          <div class=circle>
+            <div class="bar horizontal"></div>
+            <div class="bar vertical"></div>
+          </div>
+        </a>
+      </div>
+      <div class="containerButtomTrim"></div>
+    </div>
+  </div>
+  <div class="calenderContainer">
+    <div class="mainContent">
+      <p class="contentTitle">Calendar:</p>
+      <div class="eventListContainer">
+          {% for item in calendar_event %}
+          <div class="eventContainer" style="border:none;">
+            <div class="titleBox">
+              <p>
+                {{item.calendar_event.title}}
+              </p>
+              <p><span class="event{{item.calendar_event.start_date|timeBin:item.calendar_event.end_date}}">
+                {{item.calendar_event.start_date|date:"j-M"}}
+                {{item.calendar_event.start_date|date:"g:i a"}}
+              </span></p>
+            </div>
+            <div class="calendarDiscription">
+              <p><i>{{item.calendar_event.discription}}</i></p>
+              <p>-- {{item.calendar_event.created_by.first_name}}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </tbody>
+      </table>
+      </div>
+        <br style="clear:both">
+        <div style="clear:both; margin: 5px auto;">
+          <a href="{% url 'user_calendar:add_event' %}">
+            <div class=circle>
+              <div class="bar horizontal"></div>
+              <div class="bar vertical"></div>
+            </div>
+          </a>
+        </div>
+      <div class="containerButtomTrim"></div>
+    </div>
+  </div>
+{% else %}
+<div class="mainContent">
+  <h2 style="text-align:center;">Welcome to the Donohoe's supermarket management network.</h2>
+  <div class="loginSquare"><a href="{% url 'sls:login' %}">Login</a></div>
+</div>
+{% endif %}
+</div>
+
+{% if user.is_authenticated %}
+<div id="overlayToggle">
+  <div class="homeOverlay" id="overlayContainer">
+    <div id="closeOverlay">
+      <button type="button" name="X" onclick="overlayToggle()">X</button>
+    </div>
+    <br>
+    <br>
+    <div class="">
+      <h3>Add a url:</h3>
+      <form method="post">
+        {% csrf_token %}
+        {{update_url.as_p}}
+        {{update_url_profile.as_p}}
+        <input type="submit" value="Add Link" class="button">
+      </form>
+    </div>
+    <div class="containerButtomTrim"></div>
+    <div class="">
+      <h3>Remove a url:</h3>
+      <form method="post">
+        {% csrf_token %}
+        <select class="" name="delete_url_from_list" multiple>
+          {% for url in user_external_links %}
+            <option value="{{url.pk}}">{{url.name}}</option>
+          {% endfor %}
+        </select>
+        <br>
+        <input type="submit" value="Delete" class="button">
+      </form>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+
+{% block java_insert %}
+{% endblock %}
+
+{% block css_insert %}
+  <link href="{% static 'home_homepage.css' %}" rel="stylesheet">
+  <link href="{% static 'css-calendar_event.css' %}" rel="stylesheet">
+{% endblock %}

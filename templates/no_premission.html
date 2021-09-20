@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="">
+    <h2>{{permissions.user.first_name}} {{permissions.user.last_name}}, you do not have permission to view this content.</h2>
+    <p>Username: {{permissions.user.username}}</p>
+    <ul>
+      <li>Site permission level: {{permissions.hierarchy}}</li>
+      <li>Region permissions: {{permissions.region}}</li>
+      <li>Store permissions: {{permissions.store}}</li>
+    </ul>
+    <p>If these details are wrong please contant your manager.</p>
+  </div>
+
+{% endblock %}

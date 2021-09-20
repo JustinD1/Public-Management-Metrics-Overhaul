@@ -1,0 +1,53 @@
+{%extends 'base.html'%}
+{% load humanize %}
+{% load decmial2precent_tag %}
+
+{% block content %}
+  <div class="tableHeaderBox">
+    <h2>{{store.store}} - {{store.store_town}}</h2>
+    <p>{{dateDB.date}}</p>
+    <div>
+      <a href="{% url 'opr2:show_opr_list' store=store.store %}">Return to list</a>
+    </div>
+  </div>
+  <table class="dataTable">
+    <thead class="dataTableHead">
+      <tr>
+        <th class="titleW500">Section Name</th>
+        <th>Sale</th><th>Vat</th><th>Part</th><th>Margin</th>
+      </tr>
+      <tr>
+        <th class="titleW500"></th>
+        <th>€</th><th>€</th><th>%</th><th>€</th>
+      </tr>
+    </thead>
+    <tbody class="dataTableBody">
+      {% for item in deptDB %}
+        <tr data-level='{{item.section_name.data_level}}' class="rowExpand {% cycle 'row1' 'row2' %}"
+            {% if item.section_name.data_level == 1 %}
+              style="display: table-row;"
+            {% else %}
+              style="display: none;"
+            {% endif %}
+          >
+
+          <td class="leftAlign titleW500"
+            {% if item.section_name.data_level == 4 %}
+              style="padding-left:128px;"
+            {% elif item.section_name.data_level == 3 %}
+               style="padding-left:64px;"
+            {% elif item.section_name.data_level == 2 %}
+               style="padding-left:32px;"
+            {% else %}
+               style="padding-left:0px;"
+            {% endif %}
+            >{{item.section_name}}</td>
+        <td class="titleW100" >{{item.sale|floatformat:0|intcomma}}</td>
+        <td class="titleW100" >{{item.vat|floatformat:0|intcomma}}</td>
+        <td class="titleW100" >{{item.part|decmial2precent:2}}</td>
+        <td class="titleW100" >{{item.margin|floatformat:0|intcomma}}</td>
+        </tr>
+      {%endfor%}
+    </tbody>
+  </table>
+{% endblock %}

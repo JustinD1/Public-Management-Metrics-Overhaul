@@ -1,0 +1,142 @@
+
+.month_hide{
+  display: none;
+}
+
+.month_show{
+  display: block;
+}
+
+.calendar_form{
+  text-align: center;
+}
+
+.form_segment{
+  /* padding-bottom: 10px; */
+  margin-bottom: 20px;
+}
+
+
+#overlaycalendar{
+  padding: 50px;
+  padding-top: 0;
+  width: 70%;
+  margin: 150px auto;
+  background-color: #fff;
+  border: 3px solid #d6a225;
+  text-align: center;
+}
+
+.eventContainer{
+  width:80%;
+  border: solid black 2px;
+  border-radius: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
+
+.eventContainer div{
+    text-align: left;
+
+}
+
+.calendarDiscription{
+  border-top: solid black 1px;
+  padding-left: 10px;
+  padding-right: 10px;
+
+}
+
+.calendarDiscription p{
+  font-weight: 400;
+  margin:0;
+}
+
+.calendarDiscription p:nth-child(2){
+  text-align: right;
+
+}
+
+.calendarTitle{
+  float: left;
+}
+
+.calendarTitle p{
+  font-size: 22px;
+}
+
+.calendarTimes{
+  float:right;
+}
+
+.calendarTimes p{
+  font-size: 14px;
+}
+
+.titleBox{
+ padding-right: 10px;
+ padding-left: 10px;
+}
+
+.titleBox p:first-child{
+  margin:0;
+  font-size: 22px;
+  text-align: left;
+}
+
+.titleBox p:nth-child(2){
+  margin:0;
+  font-size: 14px;
+  text-align: right;
+
+}
+
+.calendarCreatedBy{
+  float:right;
+  padding-right: 10px;
+}
+
+.calendarCreatedBy p{
+  text-align: right;
+  padding-right: 10px;
+}
+
+.repeatType {
+  margin-bottom: 20px;
+}
+
+.calendarDate{
+  margin-lift: auto;
+  margin-top: 0;
+}
+
+.calendarDate p{
+  text-align: center;
+}
+
+.calendarReminder p{
+  text-align: center;
+  font-size: 12px;
+}
+
+.calendarAttendees p:nth-child(2){
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.calendarAttendees p:nth-child(2){
+  display:inline-block;
+  margin-right: 5px;
+  margin-top: 0;
+}
+
+#deletePrevious .button{
+  background-color: #bc171d;
+  color: #dad0c8;
+}
+
+
+#deletePrevious .button:hover{
+  background-color: #881115;
+  color: #e0d8d1;
+}

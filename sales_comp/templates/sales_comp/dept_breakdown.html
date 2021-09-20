@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% now "Y" as current_year %}
+<div class="mainContent">
+  <div id="saleTurnover">
+    {# <h2>{{selectedStore}}</h2> #}
+    {# <p>Currently selected department {{dept}}</p> #}
+      <form id="changeStore" method="GET">
+        <select name="storeName">
+          <option selected="selected" disabled>{{selectedStore}}</option>
+          {% for item in storeList %}
+          <div>
+            <option value="{{item.store}}">{{item}}</option>
+          </div>
+          {% endfor %}
+        </select>
+        <input type="submit" value="View">
+      </form>
+      <form id="selectYear" method="GET">
+        <select name="selectYear">
+          {% for item in yearList %}
+          {% if forloop.first %}
+            <option selected="selected" disabled>{{item}}</option>
+          {% else %}
+            <option value="{{item}}">{{item}}</option>
+          {% endif %}
+          {% endfor %}
+        </select>
+        <input type="submit" value="View">
+      </form>
+      <form id="selectDepartment" method="GET">
+        <select name="Department">
+          <option selected="selected" disabled>{{dept}}</option>
+          {% for item in deptList %}
+          <option value="{{item}}">{{item}}</option>
+          {% endfor %}
+        </select>
+        <input type="submit" value="View">
+      </form>
+  </div>
+
+
+  <table class="dataTable">
+    <thead  class="dataTableHead">
+      <tr>
+        <th></th>
+        <th colspan="3" class="doubleRightBorder">Sales</th>
+        <th colspan="4">Difference</th>
+      </tr>
+
+      <tr>
+        <th style="text-align:left;">Date</th>
+        <th>LY</th>
+        <th>TY</th>
+        <th  class="doubleRightBorder">YtD</th>
+        <th colspan="2">LY to TY</th>
+        <th colspan="2"  >YtD</th>
+      </tr>
+
+      <tr>
+        <th></th>
+        <th>€</th>
+        <th>€</th>
+        <th  class="doubleRightBorder">€</th>
+        <th>€</th>
+        <th>%</th>
+        <th>€</th>
+        <th>%</th>
+      </tr>
+    </thead>
+
+    <tbody class="dataTableBody">
+    {% for item in deptSalesDict%}
+      <tr class="{% cycle 'row1' 'row2' %}">
+        <td>{{item.date}}</td>
+        <td>{{item.preYear_wkTurnover}}</td>
+        <td>{{item.wkTurnover}}</td>
+        <td class="doubleRightBorder">{{item.cumulative_wkTurnover}}</td>
+        <td>{{item.diff}}</td>
+        <td>{{item.diffPrec}}</td>
+        <td>{{item.cumulative_diff}}</td>
+        <td>{{item.cumulative_diffPrec}}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% endblock %}
+</div>

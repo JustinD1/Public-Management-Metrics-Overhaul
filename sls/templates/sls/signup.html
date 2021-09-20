@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Sign up</h2>
+  <div class="registerForm">
+    <form method="post">
+      {% csrf_token %}
+      {{ user_form.as_p }}
+      {{ profile_form.as_p }}
+      <button type="submit">Register user</button>
+    </form>
+  </div>
+
+<div class="mainContent">
+  <div class="">
+    <h4>Users that you have registered.</h4>
+    <table class="dataTable">
+      <thead>
+        <tr>
+          <th style="max-width:300px;">Username</th>
+          <th style="max-width:300px;">First Name</th>
+          <th style="max-width:300px;">Surname</th>
+          <th style="max-width:300px;">hierarchy</th>
+          <th style="max-width:300px;"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in added_users %}
+          <tr>
+            <td>{{item.user}}</td>
+            <td>{{item.user.first_name}}</td>
+            <td>{{item.user.last_name}}</td>
+            <td>{{item.get_hierarchy_display}}</td>
+            <td> <a href="{% url 'sls:view_profile' selected_user=item.user.username %}">Update User</a> </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

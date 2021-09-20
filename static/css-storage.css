@@ -1,0 +1,91 @@
+.squareBody form p label{
+  display: block;
+}
+
+.storage_container{
+  display: flex;
+  /* width:1550px; */
+  padding:10px;
+}
+
+.catagory_container{
+  width:15%;
+  margin: 0px;
+  padding: 0px;
+  padding-right:5px;
+  margin-right:10px;
+  border-right: double #29C993;
+}
+.catagory_container ul{
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px;
+  margin-top: 31px;
+}
+.catagory_container ul li{
+  padding: 0px;
+}
+.content_container ul{
+  padding:0px;
+}
+.content_container ul li{
+  padding:0px;
+  margin-bottom: 3px;
+  display: block;
+}
+.content_container ul li span{
+  display: inline-block;
+  padding:3px;
+}
+.content_container a{
+  color: inherit;
+  text-decoration: none;
+}
+.content {
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 3px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.contentTitle{
+  padding-bottom: 2px;
+}
+.highlightBox{
+  box-shadow: 1px 2px #29C993;
+  border-bottom-right-radius: 1em 1.5em;
+}
+.contentInfo{
+  margin-left: 20px;
+  margin-right: 20px;
+}
+@media screen and (max-width: 790px) {
+  .catagory_container{
+    width: 20%;
+  }
+}
+
+/*
+CSS for the delete popup
+ */
+
+.popup-overlay{
+  position: absolute;
+  border: 3px solid #999;
+  visibility: hidden;
+  background: white;
+  width: 50%;
+  left: 25%;
+ }
+.popup-overlay.active{
+  visibility: visible;
+  text-align: center;
+}
+.popup-content{
+  margin: 5px auto;
+  visibility: hidden;
+ }
+
+.popup-content.active{
+  visibility: visible;
+}
